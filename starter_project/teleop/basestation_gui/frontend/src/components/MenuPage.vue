@@ -1,13 +1,10 @@
-from mrover.msg import Joystick, WheelCmd
-
 <template>
   <div class="wrapper">
-    <div class="box header">
-      <img src="../static/mrover.png" alt="MRover" title="MRover" width="48" height="48" />
-      <h1>Mrover Teleop</h1>
-      <div class="spacer"></div>
+    <div class="shadow p-3 mb-5 header">
+      <h1>Menu</h1>
+      <img class="logo" src="/mrover.png" alt="MRover" title="MRover" width="200" />
     </div>
-    <div class="box row">
+    <div>
       <MenuButton link="/motor_sim" name="Motor Simulator"></MenuButton>
     </div>
   </div>
@@ -27,20 +24,18 @@ components: {
 </script>
 
 <style scoped>
-.box {
-  border-radius: 5px;
-  padding: 10px;
-  border: 1px solid black;
-}
-
 .header {
   grid-area: header;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  padding: 10px;
 }
 
-.header h1 {
-  margin-left: 5px;
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 img {
@@ -50,25 +45,14 @@ img {
 
 .pages {
   grid-area: pages;
-  border: black solid 1px;
-  border-radius: 5px;
-  background-color: lightgray;
-}
-
-.row {
-  display: flex;
-  border: black solid 1px;
-  border-radius: 5px;
-  background-color: darkgray;
-  margin: 5px;
 }
 
 .wrapper {
   display: grid;
   grid-gap: 10px;
   grid-template-columns: 1fr;
-  grid-template-rows: 60px 1fr;
-  grid-template-areas: "header" "pages";
+  grid-template-rows: auto 1fr;
+  grid-template-areas: 'header' 'pages';
   font-family: sans-serif;
   height: auto;
 }

@@ -5,6 +5,5 @@ add_message_files(
         DIRECTORY
         ${CMAKE_CURRENT_LIST_DIR}/msg
         FILES
-        Joystick.msg
         WheelCmd.msg
 )

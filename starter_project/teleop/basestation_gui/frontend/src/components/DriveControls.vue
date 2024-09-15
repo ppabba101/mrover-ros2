@@ -10,90 +10,71 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 
-let interval;
+const UPDATE_HZ = 20
 
 export default {
-data () {
-  return {
-    rotational: 0,
-    linear: 0,
-    left: 0,
-    right: 0,
-
-    // declaring variable
-    socket: null
-  }
-},
-
-
-beforeUnmount: function () {
-  window.clearInterval(interval);
-},
-
-methods: {
-  sendToROS(msg) {
-    this.socket.send(JSON.stringify(msg));
-  }
-},
-
-created: function () {
-
-  const JOYSTICK_CONFIG = {
-    'left_right': 0,
-    'forward_back': 1,
-    'twist': 2,
-    'dampen': 3,
-    'pan': 4,
-    'tilt': 5
-  }
-
-  this.socket = new WebSocket('ws://127.0.0.1:8000/ws/drive-controls');
-  this.socket.onmessage = (msg) => {
-        msg = JSON.parse(msg.data)
-    if(msg.type == "wheel_cmd"){
-      this.left = msg.left;
-      this.right = msg.right;
+  data() {
+    return {
+      left: 0,
+      right: 0,
     }
-  }
+  },
 
-  const updateRate = 0.05;
-  interval = window.setInterval(() => {
-      const gamepads = navigator.getGamepads()
-      for (let i = 0; i < 4; i++) {
-        const gamepad = gamepads[i]
-        if (gamepad) {
-          if (gamepad.id.includes('Logitech')) {
-            // -1 multiplier to make turning left a positive value
-            // Both left_right axis and twisting the joystick will turn
-            this.rotational = -1 * (gamepad.axes[JOYSTICK_CONFIG['left_right']] + gamepad.axes[JOYSTICK_CONFIG['twist']])
-            // Range Constraints
-            if (this.rotational > 1) {
-              this.rotational = 1
-            }
-            else if (this.rotational < -1) {
-              this.rotational = -1
-            }
-            // forward on joystick is -1, so invert
-            this.linear = -1 * gamepad.axes[JOYSTICK_CONFIG['forward_back']]
-
-            // const joystickData = {
-            //   'type': 'joystick',
-            //   'forward_back': this.linear,
-            //   'left_right': this.rotational
-            // }
-        
-          }
-        }
-        
+  watch: {
+    message(msg) {
+      if (msg.type == 'wheel_cmd') {
+        left = msg.left;
+        right = msg.right;
       }
+    }
+  },
 
-  }, updateRate*1000)
-},
+  methods: {
+    ...mapActions('websocket', ['sendMessage'])
+  },
 
+  computed: {
+    ...mapState('websocket', ['message'])
+  },
+
+  beforeUnmount: function() {
+    window.clearInterval(this.interval)
+  },
+
+  created: function() {
+    this.interval = window.setInterval(() => {
+      /* 
+        To test this code either plug in the Thrustmaster and use this code:
+      */
+
+      const gamepads = navigator.getGamepads()
+      const gamepad = gamepads.find(gamepad => gamepad && gamepad.id.includes('Thrustmaster'))
+      if (!gamepad) return
+
+      this.sendMessage({
+        type: 'joystick',
+        axes: gamepad.axes,
+        buttons: gamepad.buttons.map(button => button.value)
+      })
+
+      /* 
+        OR, test the code with hardcoded values:
+      */
+      const axes = [0, 0.75, 0.1, 0.5, 0, 0] // index 1 affects forward/back, 2 affects twist/turn, 3 affects throttle
+      const buttons = Array(16).fill(0) // 16 buttons available to map to. None of them are "pressed" currently
+
+      this.sendMessage({
+        type: 'joystick',
+        axes: axes,
+        buttons: buttons
+      })
+      
+    }, 1000 / UPDATE_HZ)
+  }
 }
 </script>
 
 <style scoped>
-
 </style>
