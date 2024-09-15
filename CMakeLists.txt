@@ -179,6 +179,7 @@ install(PROGRAMS
 )
 
 install(DIRECTORY starter_project/autonomy/launch DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY starter_project/teleop/launch DESTINATION share/${PROJECT_NAME})
 
 ## Python
 
@@ -269,6 +270,8 @@ install(PROGRAMS
         # starter project sources
         starter_project/autonomy/src/localization.py
         starter_project/autonomy/src/navigation/navigation_starter_project.py
+        starter_project/teleop/gui_starter_backend.sh
+        starter_project/teleop/gui_starter_frontend.sh
         DESTINATION
         lib/${PROJECT_NAME}
 )
