@@ -9,9 +9,9 @@ from .context import Context
 
 
 class WaypointState(State):
-    # STOP_THRESHOLD: float = rospy.get_param("waypoint/stop_threshold")
-    # DRIVE_FORWARD_THRESHOLD: float = rospy.get_param("waypoint/drive_forward_threshold")
-    # USE_COSTMAP: bool = rospy.get_param("water_bottle_search.use_costmap")
+    # STOP_THRESHOLD: float = rclpy.get_param("waypoint/stop_threshold")
+    # DRIVE_FORWARD_THRESHOLD: float = rclpy.get_param("waypoint/drive_forward_threshold")
+    # USE_COSTMAP: bool = rclpy.get_param("water_bottle_search.use_costmap")
     # NO_TAG: int = -1
 
     def on_enter(self, context: Context) -> None:

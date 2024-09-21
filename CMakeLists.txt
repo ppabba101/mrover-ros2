@@ -179,6 +179,7 @@ install(PROGRAMS
 )
 
 install(DIRECTORY starter_project/autonomy/launch DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY starter_project/teleop/launch DESTINATION share/${PROJECT_NAME})
 
 ## Python
 
