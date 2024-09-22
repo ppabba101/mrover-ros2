@@ -5,18 +5,21 @@ from typing import Any, Type
 import yaml
 from channels.generic.websocket import JsonWebsocketConsumer
 
-import rospy
+import rclpy
 import tf2_ros
 import numpy as np
 from backend.drive_controls import send_joystick_twist
 from backend.input import DeviceInputs
 from mrover.msg import WheelCmd
+from geometry_msgs.msg import Twist
 
-rospy.init_node("teleoperation", disable_signals=True)
+node = rclpy.create_node('teleoperation')
+
+joystick_publisher = node.create_publisher(Twist, '/joystick_cmd_vel', qos_profile=1)
 
 
 class GUIConsumer(JsonWebsocketConsumer):
-    subscribers: list[rospy.Subscriber] = []
+    subscribers: list[rclpy.Subscriber] = []
 
     def connect(self) -> None:
         self.accept()
@@ -45,13 +48,13 @@ class GUIConsumer(JsonWebsocketConsumer):
             # Parse it back into a dictionary, so we can send it as JSON
             self.send_message_as_json({"type": gui_msg_type, **yaml.safe_load(str(ros_message))})
 
-        self.subscribers.append(rospy.Subscriber(topic_name, topic_type, callback))
+        self.subscribers.append(node.create_subscription(topic_type, topic_name , callback))
 
     def send_message_as_json(self, msg: dict):
         try:
             self.send(text_data=json.dumps(msg))
         except Exception as e:
-            rospy.logwarn(f"Failed to send message: {e}")
+            node.get_logger().warning(f"Failed to send message: {e}")
 
 
     def receive(self, text_data=None, bytes_data=None, **kwargs) -> None:
@@ -62,13 +65,13 @@ class GUIConsumer(JsonWebsocketConsumer):
         """
 
         if text_data is None:
-            rospy.logwarn("Expecting text but received binary on GUI websocket...")
+            node.get_logger().warning("Expecting text but received binary on GUI websocket...")
             return
 
         try:
             message = json.loads(text_data)
         except json.JSONDecodeError as e:
-            rospy.logwarn(f"Failed to decode JSON: {e}")
+            node.get_logger().warning(f"Failed to decode JSON: {e}")
             return
 
         try:
@@ -81,8 +84,8 @@ class GUIConsumer(JsonWebsocketConsumer):
                     device_input = DeviceInputs(axes, buttons)
                     send_joystick_twist(device_input)
                 case _:
-                    rospy.logwarn(f"Unhandled message: {message}")
+                    node.get_logger().warning(f"Unhandled message: {message}")
 
         except:
-            rospy.logerr(f"Failed to handle message: {message}")
-            rospy.logerr(traceback.format_exc())
+            node.get_logger().error(f"Failed to handle message: {message}")
+            node.get_logger().error(traceback.format_exc())

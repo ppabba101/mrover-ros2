@@ -1,4 +1,4 @@
-import rospy
+import rclpy
 from geometry_msgs.msg import Point
 from visualization_msgs.msg import Marker
 
@@ -7,7 +7,7 @@ def send_debug_arrow(self, rot):
     # TODO: not working
     marker = Marker()
     marker.header.frame_id = "odom"
-    marker.header.stamp = rospy.Time.now()
+    marker.header.stamp = rclpy.Time.now()
     marker.id = 0
     marker.action = Marker.ADD
     marker.type = Marker.ARROW

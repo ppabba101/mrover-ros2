@@ -217,3 +217,11 @@
   become: True
   snap:
     name: chromium
+
+- name: Install Django
+  pip:
+    virtualenv: "{{ ros2_workspace }}/src/mrover/venv"
+    name:
+      - django==5.1.1
+      - daphne==4.1.2
+      - channels==4.1.0

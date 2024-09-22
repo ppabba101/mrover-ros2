@@ -4,12 +4,12 @@ Node for simulating receiving joystick Twist input and publishing velocity comma
 """
 
 from typing import Any
-import rospy
+import rclpy
 from std_msts
 from mrover.msg import WheelCmd
 from geometry_msgs.msg import Twist
 
-wheel_pub = rospy.Publisher("/wheel_cmd", WheelCmd, queue_size=1)
+wheel_pub = rclpy.Publisher("/wheel_cmd", WheelCmd, queue_size=1)
 
 def calculate_wheel_velocities(msg):
     forward_back = msg.linear.x
@@ -33,11 +33,11 @@ def calculate_wheel_velocities(msg):
     wheel_pub.publish(wheel_cmd)
 
 def main():
-    rospy.init_node("motor_sim_node")
+    rclpy.init_node("motor_sim_node")
 
-    rospy.Subscriber("/joystick_cmd_vel", Twist, calculate_wheel_velocities)
+    rclpy.Subscriber("/joystick_cmd_vel", Twist, calculate_wheel_velocities)
 
-    rospy.spin()
+    rclpy.spin()
 
 
 if __name__ == "__main__":

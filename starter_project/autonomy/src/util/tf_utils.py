@@ -1,6 +1,6 @@
 import numpy as np
 
-import rospy
+import rclpy
 from geometry_msgs.msg import Point, TransformStamped, Vector3
 from sensor_msgs.msg import NavSatFix, geometry_msgs
 
@@ -16,7 +16,7 @@ def gps_to_world(gps_coord: NavSatFix, ref_coord: NavSatFix, name: str, parent: 
     :param parent: The name of the reference world frame
     """
     t = geometry_msgs.msg.TransformStamped()
-    t.header.stamp = rospy.Time.now()
+    t.header.stamp = rclpy.Time.now()
     t.header.frame_id = parent
     t.child_frame_id = name
     longitude_delta = gps_coord.longitude - ref_coord.longitude
