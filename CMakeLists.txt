@@ -268,6 +268,7 @@ install(PROGRAMS
         starter_project/autonomy/src/navigation/navigation_starter_project.py
         starter_project/teleop/gui_starter_frontend.sh
         starter_project/teleop/gui_starter_backend.sh
+        starter_project/teleop/motor_sim.py
         DESTINATION
         lib/${PROJECT_NAME}
 )

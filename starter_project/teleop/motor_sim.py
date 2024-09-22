@@ -8,7 +8,7 @@ import rclpy
 from mrover.msg import WheelCmd
 from geometry_msgs.msg import Twist
 
-wheel_pub = rclpy.Publisher("/wheel_cmd", WheelCmd, queue_size=1)
+wheel_pub = None
 
 def calculate_wheel_velocities(msg):
     forward_back = msg.linear.x
@@ -32,9 +32,11 @@ def calculate_wheel_velocities(msg):
     wheel_pub.publish(wheel_cmd)
 
 def main():
-    rclpy.init_node("motor_sim_node")
+    node = rclpy.create_node("motor_sim_node")
 
-    rclpy.Subscriber("/joystick_cmd_vel", Twist, calculate_wheel_velocities)
+    wheel_pub = node.create_publisher("/wheel_cmd", WheelCmd, queue_size=1)
+
+    node.create_subscription("/joystick_cmd_vel", Twist, calculate_wheel_velocities)
 
     rclpy.spin()
 

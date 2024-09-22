@@ -32,5 +32,5 @@ urlpatterns = [
 ]
 
 websocket_urlpatterns = [
-    path("ws/drive-controls", GUIConsumer.as_asgi())
+    path("ws/gui", GUIConsumer.as_asgi())
 ]

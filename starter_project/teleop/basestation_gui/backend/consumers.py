@@ -26,6 +26,8 @@ class GUIConsumer(JsonWebsocketConsumer):
     def connect(self) -> None:
         self.accept()
 
+        print("HERE")
+
         ########################################################################################
         # Use self.forward_ros_topic when you want to get data from a ROS topic to a GUI
         # without needing any modifications done on it. For instance, reading motor output.
@@ -34,7 +36,7 @@ class GUIConsumer(JsonWebsocketConsumer):
 
     def disconnect(self, close_code) -> None:
         for subscriber in self.subscribers:
-            subscriber.unregister()
+            node.destroy_subscription(subscriber)
 
     def forward_ros_topic(self, topic_name: str, topic_type: Type, gui_msg_type: str) -> None:
         """
@@ -50,7 +52,7 @@ class GUIConsumer(JsonWebsocketConsumer):
             # Parse it back into a dictionary, so we can send it as JSON
             self.send_message_as_json({"type": gui_msg_type, **yaml.safe_load(str(ros_message))})
 
-        self.subscribers.append(node.create_subscription(topic_type, topic_name , callback))
+        self.subscribers.append(node.create_subscription(topic_type, topic_name , callback, qos_profile=1))
 
     def send_message_as_json(self, msg: dict):
         try:

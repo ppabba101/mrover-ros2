@@ -1,23 +1,22 @@
-import os
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess
-from ament_index_python.packages import get_package_share_directory
+from launch_ros.actions import Node
 
 def generate_launch_description():
-    package_share_directory = get_package_share_directory('mrover')
-    scripts_directory = os.path.join(package_share_directory, 'starter_project/teleop')
+
+    teleop_backend = Node(
+            package="mrover",
+            executable="gui_starter_backend.sh",
+            name="teleop_backend"
+    )
+
+    teleop_frontend = Node(
+            package="mrover",
+            executable="gui_starter_frontend.sh",
+            name="teleop_frontend"
+    )
 
     return LaunchDescription([
-        ExecuteProcess(
-            cmd=[os.path.join(scripts_directory, 'gui_starter_frontend.sh')],
-            cwd=scripts_directory,
-            name='gui_frontend',
-            output='screen'
-        ),
-        ExecuteProcess(
-            cmd=[os.path.join(scripts_directory, 'gui_starter_backend.sh')],
-            cwd=scripts_directory,
-            name='gui_backend',
-            output='screen'
-        ),
+        teleop_backend,
+        teleop_frontend,
+
     ])
