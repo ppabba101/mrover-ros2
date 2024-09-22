@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Menu from "../components/MenuPage.vue";
-import DriveControls from "../components/DriveControls.vue";
+
+// TODO: Import DriveControls here
 
 const routes = [
   {
@@ -8,11 +9,7 @@ const routes = [
     name: "Menu",
     component: Menu,
   },
-  {
-    path: '/motor_sim',
-    name: 'Motor Sim',
-    component: DriveControls
-  },
+  // TODO: Add DriveControls route here
 ];
 
 const router = createRouter({

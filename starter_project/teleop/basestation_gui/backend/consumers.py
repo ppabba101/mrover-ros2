@@ -12,8 +12,8 @@ import tf2_ros
 import numpy as np
 from backend.drive_controls import send_joystick_twist
 from backend.input import DeviceInputs
-from mrover.msg import WheelCmd
-from geometry_msgs.msg import Twist
+
+# TODO: add WheelCmd import
 
 node = rclpy.create_node('teleoperation')
 
@@ -28,7 +28,8 @@ class GUIConsumer(JsonWebsocketConsumer):
         # Use self.forward_ros_topic when you want to get data from a ROS topic to a GUI
         # without needing any modifications done on it. For instance, reading motor output.
         ########################################################################################
-        self.forward_ros_topic("/wheel_cmd", WheelCmd, "wheel_cmd")
+
+        # TODO: add /wheel_cmd listener
 
     def disconnect(self, close_code) -> None:
         for subscriber in self.subscribers:

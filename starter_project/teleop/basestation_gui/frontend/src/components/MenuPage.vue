@@ -4,20 +4,19 @@
         <h1>Menu</h1>
         <img class="logo" src="/mrover.png" alt="MRover" title="MRover" width="200" />
       </div>
-      <div>
-        <MenuButton link="/motor_sim" name="Motor Simulator"></MenuButton>
-      </div>
+
+      <!-- TODO: Add Menu Button Here -->
     </div>
   </template>
   
   <script>
-  import MenuButton from './MenuButton.vue';
+// TODO: import the MenuButton component here
   
   export default {
     name: 'MenuPage',
   
   components: {
-      MenuButton,
+      // TODO: Add MenuButton here,
   }
   
   }
