@@ -11,6 +11,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 const UPDATE_HZ = 20
 

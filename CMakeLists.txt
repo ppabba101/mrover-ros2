@@ -143,18 +143,14 @@ message(STATUS "Found message files: ${MROVER_MESSAGE_FILE_PATHS}")
 file(GLOB_RECURSE MROVER_SERVICE_FILE_PATHS RELATIVE ${CMAKE_CURRENT_LIST_DIR} CONFIGURE_DEPENDS srv/*.srv)
 message(STATUS "Found service files: ${MROVER_SERVICE_FILE_PATHS}")
 
-# Starter Project
-message(STATUS "PROJ NAME: ${PROJECT_NAME}")
-
 set(MROVER_CMAKE_INCLUDES
         starter_project/autonomy/AutonomyStarterProject.cmake
+        starter_project/teleop/CMakeLists.txt
 )
 
 foreach (MROVER_CMAKE_INCLUDE ${MROVER_CMAKE_INCLUDES})
     include(${MROVER_CMAKE_INCLUDE})
 endforeach ()
-
-message(STATUS "Found message files: ${MROVER_MESSAGE_FILE_PATHS}")
 
 rosidl_generate_interfaces(${PROJECT_NAME}
         ${MROVER_MESSAGE_FILE_PATHS}
@@ -270,8 +266,8 @@ install(PROGRAMS
         # starter project sources
         starter_project/autonomy/src/localization.py
         starter_project/autonomy/src/navigation/navigation_starter_project.py
-        starter_project/teleop/gui_starter_backend.sh
         starter_project/teleop/gui_starter_frontend.sh
+        starter_project/teleop/gui_starter_backend.sh
         DESTINATION
         lib/${PROJECT_NAME}
 )

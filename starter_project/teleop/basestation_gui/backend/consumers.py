@@ -6,6 +6,8 @@ import yaml
 from channels.generic.websocket import JsonWebsocketConsumer
 
 import rclpy
+from rclpy.subscription import Subscription
+
 import tf2_ros
 import numpy as np
 from backend.drive_controls import send_joystick_twist
@@ -19,7 +21,7 @@ joystick_publisher = node.create_publisher(Twist, '/joystick_cmd_vel', qos_profi
 
 
 class GUIConsumer(JsonWebsocketConsumer):
-    subscribers: list[rclpy.Subscriber] = []
+    subscribers: list[Subscription] = []
 
     def connect(self) -> None:
         self.accept()
