@@ -32,13 +32,14 @@ def calculate_wheel_velocities(msg):
     wheel_pub.publish(wheel_cmd)
 
 def main():
+    rclpy.init()
     node = rclpy.create_node("motor_sim_node")
 
-    wheel_pub = node.create_publisher("/wheel_cmd", WheelCmd, queue_size=1)
+    wheel_pub = node.create_publisher(WheelCmd, "/wheel_cmd", qos_profile=1)
 
-    node.create_subscription("/joystick_cmd_vel", Twist, calculate_wheel_velocities)
+    node.create_subscription(Twist, "/joystick_cmd_vel", calculate_wheel_velocities, qos_profile=1)
 
-    rclpy.spin()
+    rclpy.spin(node)
 
 
 if __name__ == "__main__":
