@@ -50,15 +50,15 @@
           To test this code either plug in the Thrustmaster and use this code:
         */
   
-        const gamepads = navigator.getGamepads()
-        const gamepad = gamepads.find(gamepad => gamepad && gamepad.id.includes('Thrustmaster'))
-        if (!gamepad) return
+        // const gamepads = navigator.getGamepads()
+        // const gamepad = gamepads.find(gamepad => gamepad && gamepad.id.includes('Thrustmaster'))
+        // if (!gamepad) return
   
-        this.sendMessage({
-          type: 'joystick',
-          axes: gamepad.axes,
-          buttons: gamepad.buttons.map(button => button.value)
-        })
+        // this.sendMessage({
+        //   type: 'joystick',
+        //   axes: gamepad.axes,
+        //   buttons: gamepad.buttons.map(button => button.value)
+        // })
   
         /* 
           OR, test the code with hardcoded values:

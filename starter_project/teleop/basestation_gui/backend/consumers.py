@@ -17,16 +17,12 @@ from geometry_msgs.msg import Twist
 
 node = rclpy.create_node('teleoperation')
 
-joystick_publisher = node.create_publisher(Twist, '/joystick_cmd_vel', qos_profile=1)
-
 
 class GUIConsumer(JsonWebsocketConsumer):
     subscribers: list[Subscription] = []
 
     def connect(self) -> None:
         self.accept()
-
-        print("HERE")
 
         ########################################################################################
         # Use self.forward_ros_topic when you want to get data from a ROS topic to a GUI
