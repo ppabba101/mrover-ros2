@@ -84,6 +84,7 @@ class Localization(Node):
 
         return np.array([x, y, z])
 
+
 def main():
     # initialize the node
     rclpy.init()
