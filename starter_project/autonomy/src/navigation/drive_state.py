@@ -16,12 +16,18 @@ class DriveState(State):
         target = np.array([8.0, 2.0, 0.0])
 
         # TODO: get the rover's pose, if it doesn't exist stay in DriveState (return self)
+        pose = context.rover.get_pose()
 
         # TODO: get the drive command and completion status based on target and pose
         # (HINT: use get_drive_command(), with completion_thresh set to 0.7 and turn_in_place_thresh set to 0.2)
+        twist, done = get_drive_command(target, pose, 0.7, 0.2)
 
         # TODO: if we are finished getting to the target, go to TagSeekState
-        
+        if done:
+            return TagSeekState()
+
         # TODO: send the drive command to the rover
+        context.rover.send_drive_command(twist)
 
         # TODO: tell state machine to stay in the DriveState by returning self
+        return self

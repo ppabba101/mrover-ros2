@@ -32,6 +32,12 @@ class Navigation(Node):
 
         # TODO: add DriveState and its transitions here
 
+        # DriveState and its transitions
+        self.state_machine.add_transitions(
+            DriveState(),
+            [TagSeekState()],
+        )
+
         # DoneState and its transitions
         self.state_machine.add_transitions(
             DoneState(),
@@ -45,6 +51,10 @@ class Navigation(Node):
         )
 
         # TODO: add TagSeekState and its transitions here
+        self.state_machine.add_transitions(
+            TagSeekState(),
+            [DoneState(), FailState()],
+        )
 
         self.state_machine_server = StatePublisher(self, self.state_machine, "nav_structure", 1, "nav_state", 10)
 
